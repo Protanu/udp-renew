@@ -165,6 +165,15 @@ def save_metrics_to_csv(metric: TransferMetrics, csv_filepath: str) -> None:
     os.makedirs(os.path.dirname(os.path.abspath(csv_filepath)), exist_ok=True)
     file_exists = os.path.exists(csv_filepath) and os.path.getsize(csv_filepath) > 0
 
+    # Ensure file ends with newline before appending
+    if file_exists:
+        with open(csv_filepath, "rb") as f:
+            f.seek(-1, 2)
+            last_char = f.read(1)
+            if last_char != b"\n":
+                with open(csv_filepath, "a", newline="", encoding="utf-8") as f:
+                    f.write("\n")
+
     with open(csv_filepath, "a", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=CSV_FIELDNAMES)
         if not file_exists:
@@ -176,6 +185,15 @@ def save_metrics_batch_to_csv(metrics: List[TransferMetrics], csv_filepath: str)
     # Appends multiple TransferMetrics records to a CSV file
     os.makedirs(os.path.dirname(os.path.abspath(csv_filepath)), exist_ok=True)
     file_exists = os.path.exists(csv_filepath) and os.path.getsize(csv_filepath) > 0
+
+    # Ensure file ends with newline before appending
+    if file_exists:
+        with open(csv_filepath, "rb") as f:
+            f.seek(-1, 2)
+            last_char = f.read(1)
+            if last_char != b"\n":
+                with open(csv_filepath, "a", newline="", encoding="utf-8") as f:
+                    f.write("\n")
 
     with open(csv_filepath, "a", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=CSV_FIELDNAMES)
